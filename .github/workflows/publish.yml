@@ -1,0 +1,57 @@
+name: Publish to GitHub Pages
+
+on:
+  repository_dispatch:
+    types:
+      - contentful-change
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Cache Gatsby
+        uses: actions/cache@v3
+        id: gatsby
+        with:
+          path: |
+            .cache
+            public
+          # we have to not include the string "gatsby" in the cache name.
+          # otherwise, the cache will be busted on every build.
+          key: ${{ runner.os }}-build-cache
+
+      - name: Install
+        run: npm ci --ignore-scripts --prefer-offline --no-audit
+
+      - name: Build
+        env:
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+        run: npm run build
+
+      - name: Publish
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

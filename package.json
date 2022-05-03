@@ -1,6 +1,6 @@
 {
   "name": "gatsby-test",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "gatsby-test",
   "author": "John Dunning",
@@ -10,15 +10,19 @@
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
+    "build": "gatsby build --prefix-paths --log-pages",
+    "serve": "gatsby serve --prefix-paths",
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@contentful/rich-text-types": "^15.12.1",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
+    "@theme-ui/presets": "^0.14.5",
     "babel-plugin-styled-components": "^2.0.7",
-    "gatsby": "^4.13.0",
+    "dotenv": "^16.0.0",
+    "gatsby": "^4.13.1",
+    "gatsby-plugin-alias-imports": "^1.0.5",
     "gatsby-plugin-google-analytics": "^4.13.0",
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-mdx": "^3.13.0",
@@ -26,11 +30,14 @@
     "gatsby-plugin-sharp": "^4.13.0",
     "gatsby-plugin-sitemap": "^5.13.0",
     "gatsby-plugin-styled-components": "^5.13.0",
+    "gatsby-plugin-theme-ui": "^0.14.5",
+    "gatsby-source-contentful": "^7.11.0",
     "gatsby-source-filesystem": "^4.13.0",
     "gatsby-transformer-sharp": "^4.13.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "theme-ui": "^0.14.5"
   }
 }
